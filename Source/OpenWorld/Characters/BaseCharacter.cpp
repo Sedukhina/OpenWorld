@@ -51,7 +51,6 @@ UBaseCharacterMovementComponent* ABaseCharacter::GetBaseCharacterMovementCompone
 void ABaseCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 
@@ -81,16 +80,6 @@ void ABaseCharacter::Tick(float DeltaTime)
 void ABaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(PlayerInputComponent))
-	{
-		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Move);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Look);
-		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Zoom);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Jump);
-		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &ACharacter::StopJumping);
-		EnhancedInputComponent->BindAction(SwimAction, ETriggerEvent::Triggered, this, &ABaseCharacter::Swim);
-	}
 }
 
 void ABaseCharacter::Look(const FInputActionValue& Value)
@@ -139,16 +128,12 @@ void ABaseCharacter::Swim(const FInputActionValue& Value)
 	}
 }
 
-void ABaseCharacter::Jump()
+void ABaseCharacter::Mantle()
 {
 	FLedge Ledge;
 	if (LedgeDetector->DetectLedge(Ledge))
 	{
 
-	}
-	else
-	{
-		Super::Jump();
 	}
 }
 

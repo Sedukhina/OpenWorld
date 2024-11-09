@@ -40,26 +40,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	class ULedgeDetectorComponent* LedgeDetector;
 
-	// Input Mapping
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputMappingContext* MappingContext;
-
-	// Input Actions 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* MoveAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* ZoomAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* JumpAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	class UInputAction* SwimAction;
-
 	class UBaseCharacterMovementComponent* BaseCharacterMovementComponent;
 
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
@@ -84,8 +64,7 @@ public:
 
 	// Movement Functions
 	void Move(const FInputActionValue& Value);
-
 	void Swim(const FInputActionValue& Value);
 
-	virtual void Jump() override;
+	void Mantle();
 };

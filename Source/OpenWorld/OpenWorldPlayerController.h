@@ -6,6 +6,8 @@
 #include "GameFramework/PlayerController.h"
 #include "OpenWorldPlayerController.generated.h"
 
+
+struct FInputActionValue;
 /**
  * 
  */
@@ -20,8 +22,40 @@ public:
 	virtual void SetupInputComponent() override;
 
 protected:
+
+	TWeakObjectPtr<class ABaseCharacter> CachedCharacter;
+
 	// Input Mapping
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputMappingContext* MappingContext;
+
+	// Input Actions 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* LookAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* ZoomAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* JumpAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* MantleAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* SwimAction;
+
+	void Look(const FInputActionValue& Value);
+	void Zoom(const FInputActionValue& Value);
+
+	void Move(const FInputActionValue& Value);
+	void Swim(const FInputActionValue& Value);
+
+	void Jump();
+	void StopJumping();
+	void Mantle();
 
 };
