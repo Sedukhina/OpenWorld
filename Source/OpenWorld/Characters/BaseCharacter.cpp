@@ -33,10 +33,6 @@ ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 
 	bUseControllerRotationYaw = false;
 
-	UCapsuleComponent* CapsuleCollision = GetCapsuleComponent();
-	DefaultCapsuleHalfHeight = CapsuleCollision->GetUnscaledCapsuleHalfHeight();
-	DefaultCapsuleRadius = CapsuleCollision->GetUnscaledCapsuleRadius();
-
 	BaseCharacterMovementComponent = StaticCast<UBaseCharacterMovementComponent*>(GetCharacterMovement());
 
 	LedgeDetector = CreateDefaultSubobject<ULedgeDetectorComponent>(TEXT("Ledge Detector"));
@@ -54,20 +50,9 @@ void ABaseCharacter::BeginPlay()
 }
 
 
-void ABaseCharacter::OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode)
+bool ABaseCharacter::CanJumpInternal_Implementation() const
 {
-	Super::OnMovementModeChanged(PreviousMovementMode, PreviousCustomMode);
-
-	if (PreviousMovementMode == MOVE_Swimming)
-	{
-		UCapsuleComponent* Capsule = GetCapsuleComponent();
-		Capsule->SetCapsuleSize(DefaultCapsuleRadius, DefaultCapsuleHalfHeight);
-	}
-	else if (BaseCharacterMovementComponent->MovementMode == MOVE_Swimming)
-	{
-		UCapsuleComponent* Capsule = GetCapsuleComponent();
-		Capsule->SetCapsuleSize(SwimmingtCapsuleRadius, SwimmingtCapsuleHalfHeight);
-	}
+	return (!BaseCharacterMovementComponent->IsMantling()) && Super::CanJumpInternal_Implementation();
 }
 
 // Called every frame
@@ -133,7 +118,7 @@ void ABaseCharacter::Mantle()
 	FLedge Ledge;
 	if (LedgeDetector->DetectLedge(Ledge))
 	{
-
+		BaseCharacterMovementComponent->StartMantle(Ledge);
 	}
 }
 

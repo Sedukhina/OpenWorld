@@ -42,15 +42,7 @@ protected:
 
 	class UBaseCharacterMovementComponent* BaseCharacterMovementComponent;
 
-	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
-
-	float DefaultCapsuleHalfHeight;
-	float DefaultCapsuleRadius;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Swimming")
-	float SwimmingtCapsuleHalfHeight = 50.f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Swimming")
-	float SwimmingtCapsuleRadius = 60.f;
+	virtual bool CanJumpInternal_Implementation() const override;
 
 public:	
 	// Called every frame

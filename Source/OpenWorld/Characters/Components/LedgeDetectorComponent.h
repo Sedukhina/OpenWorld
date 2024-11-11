@@ -31,7 +31,7 @@ protected:
 	float MaxLedgeHeight = 250.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float MinLedgeHeight = 50.f;
+	float MinLedgeHeight = 100.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float MaxDistanceToLedge = 100.f;

@@ -68,7 +68,7 @@ bool ULedgeDetectorComponent::DetectLedge(OUT FLedge& Ledge)
 		return false;
 	}
 
-	Ledge.Location = DownwardCheckHitResult.ImpactPoint;
+	Ledge.Location = OverlapLocation;
 	// Making rotation opposite to normal, so character will face in that direction
 	Ledge.Rotation = (ForwardCheckHitResult.ImpactNormal * FVector(-1, -1, 0)).ToOrientationRotator();
 	return true;
