@@ -12,6 +12,7 @@ struct FLedge
 	GENERATED_BODY()
 
 	FVector Location;
+	FVector Normal;
 	FRotator Rotation;
 };
 
@@ -31,7 +32,7 @@ protected:
 	float MaxLedgeHeight = 250.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	float MinLedgeHeight = 100.f;
+	float MinLedgeHeight = 30.f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float MaxDistanceToLedge = 100.f;

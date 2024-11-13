@@ -17,6 +17,25 @@ enum class ECustomMovementMode : uint8
 };
 
 struct FLedge;
+
+USTRUCT()
+struct FMantlingParameters
+{
+	GENERATED_BODY()
+
+	FVector CharacterInitialLocation = FVector::ZeroVector;
+	FRotator CharacterInitialRotation = FRotator::ZeroRotator;
+
+	FVector CharacterTargetLocation = FVector::ZeroVector;;
+	FRotator CharacterTargetRotation = FRotator::ZeroRotator;
+
+	float Duration = 0.f;
+	float StartTime = 0.f;
+	UCurveVector* MantlingCurve;
+	FVector InitialAnimationLocation;
+};
+
+
 /**
  * 
  */
@@ -30,7 +49,7 @@ public:
 
 	virtual void OnMovementModeChanged(EMovementMode PreviousMovementMode, uint8 PreviousCustomMode) override;
 
-	void StartMantle(FLedge &Ledge);
+	void StartMantle(FMantlingParameters& MantlingParameters);
 	void EndMantling();
 	bool IsMantling();
 
@@ -45,9 +64,6 @@ protected:
 	float SwimmingtCapsuleRadius = 60.f;
 
 	// Mantling
-	FLedge MantlingTargetLedge;
-	FVector CharacterInitialLocation;
-	FRotator CharacterInitialRotation;
 	FTimerHandle MantlingTimer;
-	float MantlingTime = 0.5f;
+	FMantlingParameters CurrentMantlingParameters;
 };

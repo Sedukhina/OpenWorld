@@ -4,6 +4,7 @@
 #include "BaseCharacterMovementComponent.h"
 #include "..\\BaseCharacter.h"
 #include <Components/CapsuleComponent.h>
+#include <Curves/CurveVector.h>
 
 void UBaseCharacterMovementComponent::BeginPlay()
 {
@@ -12,9 +13,9 @@ void UBaseCharacterMovementComponent::BeginPlay()
 	bOrientRotationToMovement = true;
 }
 
-void UBaseCharacterMovementComponent::StartMantle(FLedge &Ledge)
+void UBaseCharacterMovementComponent::StartMantle(FMantlingParameters& MantlingParameters)
 {
-	MantlingTargetLedge = Ledge;
+	CurrentMantlingParameters = MantlingParameters;
 	SetMovementMode(MOVE_Custom, (uint8)ECustomMovementMode::CMOVE_Mantling);
 }
 
@@ -34,9 +35,16 @@ void UBaseCharacterMovementComponent::PhysCustom(float DelatTime, int32 Iteratio
 	{
 		case((uint8)ECustomMovementMode::CMOVE_Mantling):
 		{
-			float TimerProgressRatio = (GetWorld()->GetTimerManager().GetTimerElapsed(MantlingTimer))/MantlingTime;
-			FVector CurrentLocation = FMath::Lerp(CharacterInitialLocation, MantlingTargetLedge.Location, TimerProgressRatio);
-			FRotator CurrentRotation = FMath::Lerp(CharacterInitialRotation, MantlingTargetLedge.Rotation, TimerProgressRatio);
+			float TimeElapsed = (GetWorld()->GetTimerManager().GetTimerElapsed(MantlingTimer)) + CurrentMantlingParameters.StartTime;
+
+			FVector CurveValue = CurrentMantlingParameters.MantlingCurve->GetVectorValue(TimeElapsed);
+
+			FVector CorrectedInitialLocation = FMath::Lerp(CurrentMantlingParameters.CharacterInitialLocation, CurrentMantlingParameters.InitialAnimationLocation, CurveValue.Y);
+			CorrectedInitialLocation.Z = FMath::Lerp(CurrentMantlingParameters.CharacterInitialLocation.Z, CurrentMantlingParameters.InitialAnimationLocation.Z, CurveValue.Z);
+
+			FVector CurrentLocation = FMath::Lerp(CorrectedInitialLocation, CurrentMantlingParameters.CharacterTargetLocation, CurveValue.X);
+			FRotator CurrentRotation = FMath::Lerp(CurrentMantlingParameters.CharacterInitialRotation, CurrentMantlingParameters.CharacterTargetRotation, CurveValue.X);
+
 			FVector LocationDelta = CurrentLocation - GetActorLocation();
 			FHitResult HitResult;
 			SafeMoveUpdatedComponent(LocationDelta, CurrentRotation, false, HitResult);
@@ -70,10 +78,7 @@ void UBaseCharacterMovementComponent::OnMovementModeChanged(EMovementMode Previo
 		{
 			case((uint8)ECustomMovementMode::CMOVE_Mantling):
 			{
-				CharacterInitialLocation = GetActorLocation();
-				CharacterInitialRotation = CachedCharacterOwner->GetActorRotation();
-				GetWorld()->GetTimerManager().SetTimer(MantlingTimer, this, &UBaseCharacterMovementComponent::EndMantling, MantlingTime);
-
+				GetWorld()->GetTimerManager().SetTimer(MantlingTimer, this, &UBaseCharacterMovementComponent::EndMantling, CurrentMantlingParameters.Duration);
 				break;
 			}
 			default:
