@@ -11,9 +11,11 @@ struct FLedge
 {
 	GENERATED_BODY()
 
-	FVector Location;
-	FVector Normal;
+	TWeakObjectPtr<UPrimitiveComponent> ComponentLedgeAttachedTo;
+
 	FRotator Rotation;
+	FVector RelativeLocation;
+	FVector Normal;
 };
 
 

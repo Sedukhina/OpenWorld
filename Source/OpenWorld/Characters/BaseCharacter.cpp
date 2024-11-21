@@ -120,12 +120,13 @@ void ABaseCharacter::Mantle()
 	if (CanMantle() && MantlingSettingsArray.Num() != 0 && LedgeDetector->DetectLedge(Ledge))
 	{
 		FMantlingParameters MantlingParameters;
+		MantlingParameters.ComponentLedgeAttachedTo = Ledge.ComponentLedgeAttachedTo;
 		MantlingParameters.CharacterInitialLocation = GetActorLocation();
 		MantlingParameters.CharacterInitialRotation = GetActorRotation();
-		MantlingParameters.CharacterTargetLocation = Ledge.Location;
+		MantlingParameters.CharacterTargetRelativeLocation = Ledge.RelativeLocation;
 		MantlingParameters.CharacterTargetRotation = Ledge.Rotation;
 
-		float LedgeHeight = MantlingParameters.CharacterTargetLocation.Z - MantlingParameters.CharacterInitialLocation.Z;
+		float LedgeHeight = (Ledge.ComponentLedgeAttachedTo->GetComponentLocation() + Ledge.RelativeLocation).Z - MantlingParameters.CharacterInitialLocation.Z;
 		for (FMantlingSettings& MantlingSettings : MantlingSettingsArray)
 		{
 			if (LedgeHeight >= MantlingSettings.MinLedgeHeight && LedgeHeight <= MantlingSettings.MaxLedgeHeight)
@@ -141,7 +142,7 @@ void ABaseCharacter::Mantle()
 
 				MantlingParameters.StartTime = FMath::GetMappedRangeValueClamped(SourceRange, TargetRange, LedgeHeight);
 					
-				MantlingParameters.InitialAnimationLocation = Ledge.Location - FVector::UpVector * MantlingSettings.AnimationCorrectionZ + Ledge.Normal * MantlingSettings.AnimationCorrectionXY;
+				MantlingParameters.InitialAnimationLocation = Ledge.ComponentLedgeAttachedTo->GetComponentLocation() + Ledge.RelativeLocation - FVector::UpVector * MantlingSettings.AnimationCorrectionZ + Ledge.Normal * MantlingSettings.AnimationCorrectionXY;
 
 				BaseCharacterMovementComponent->StartMantle(MantlingParameters);
 				GetMesh()->GetAnimInstance()->Montage_Play(MantlingSettings.MantlingMontage, 1.0f, EMontagePlayReturnType::Duration, MantlingParameters.StartTime);

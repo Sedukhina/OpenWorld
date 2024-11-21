@@ -23,10 +23,12 @@ struct FMantlingParameters
 {
 	GENERATED_BODY()
 
+	TWeakObjectPtr<UPrimitiveComponent> ComponentLedgeAttachedTo;
+
 	FVector CharacterInitialLocation = FVector::ZeroVector;
 	FRotator CharacterInitialRotation = FRotator::ZeroRotator;
 
-	FVector CharacterTargetLocation = FVector::ZeroVector;;
+	FVector CharacterTargetRelativeLocation = FVector::ZeroVector;;
 	FRotator CharacterTargetRotation = FRotator::ZeroRotator;
 
 	float Duration = 0.f;

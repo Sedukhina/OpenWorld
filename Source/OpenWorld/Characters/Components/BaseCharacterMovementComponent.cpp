@@ -42,7 +42,8 @@ void UBaseCharacterMovementComponent::PhysCustom(float DelatTime, int32 Iteratio
 			FVector CorrectedInitialLocation = FMath::Lerp(CurrentMantlingParameters.CharacterInitialLocation, CurrentMantlingParameters.InitialAnimationLocation, CurveValue.Y);
 			CorrectedInitialLocation.Z = FMath::Lerp(CurrentMantlingParameters.CharacterInitialLocation.Z, CurrentMantlingParameters.InitialAnimationLocation.Z, CurveValue.Z);
 
-			FVector CurrentLocation = FMath::Lerp(CorrectedInitialLocation, CurrentMantlingParameters.CharacterTargetLocation, CurveValue.X);
+			FVector CharacterTargetLocation = CurrentMantlingParameters.ComponentLedgeAttachedTo->GetComponentLocation() + CurrentMantlingParameters.CharacterTargetRelativeLocation;
+			FVector CurrentLocation = FMath::Lerp(CorrectedInitialLocation, CharacterTargetLocation, CurveValue.X);
 			FRotator CurrentRotation = FMath::Lerp(CurrentMantlingParameters.CharacterInitialRotation, CurrentMantlingParameters.CharacterTargetRotation, CurveValue.X);
 
 			FVector LocationDelta = CurrentLocation - GetActorLocation();

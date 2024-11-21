@@ -18,7 +18,9 @@ void ULedgeDetectorComponent::BeginPlay()
 
 bool ULedgeDetectorComponent::DetectLedge(OUT FLedge& Ledge)
 {
-	UCapsuleComponent* PlayerCapsule = CachedCharacterOwner->GetCapsuleComponent();
+	ACharacter* DefaultCharacter = CachedCharacterOwner->GetClass()->GetDefaultObject<ACharacter>();
+	UCapsuleComponent* PlayerCapsule = DefaultCharacter->GetCapsuleComponent();
+	//UCapsuleComponent* PlayerCapsule = CachedCharacterOwner->GetCapsuleComponent();
 
 	FCollisionQueryParams SweepsParams;
 	SweepsParams.bTraceComplex = 1;
@@ -68,7 +70,8 @@ bool ULedgeDetectorComponent::DetectLedge(OUT FLedge& Ledge)
 		return false;
 	}
 
-	Ledge.Location = OverlapLocation;
+	Ledge.ComponentLedgeAttachedTo = DownwardCheckHitResult.Component;
+	Ledge.RelativeLocation = OverlapLocation - Ledge.ComponentLedgeAttachedTo->GetComponentLocation();
 	// Making rotation opposite to normal, so character will face in that direction
 	Ledge.Rotation = (ForwardCheckHitResult.ImpactNormal * FVector(-1, -1, 0)).ToOrientationRotator();
 	Ledge.Normal = ForwardCheckHitResult.ImpactNormal;
