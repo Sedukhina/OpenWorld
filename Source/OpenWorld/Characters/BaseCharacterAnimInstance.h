@@ -33,4 +33,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bIsWalking = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	bool bIsClimbing = false;
 };

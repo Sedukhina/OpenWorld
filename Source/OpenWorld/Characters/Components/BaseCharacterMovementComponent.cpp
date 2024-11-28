@@ -41,7 +41,7 @@ void UBaseCharacterMovementComponent::AttachToLadder(ALadder* Ladder)
 	{
 		CurrentLadder = Ladder;
 		SetMovementMode(MOVE_Custom, (uint8)ECustomMovementMode::CMOVE_OnLadder);
-		FVector TargetLocation = FVector(Ladder->GetActorLocation().X, Ladder->GetActorLocation().Y, GetActorLocation().Z) + Ladder->GetActorForwardVector() * CachedCharacterOwner->GetCapsuleComponent()->GetScaledCapsuleRadius();
+		FVector TargetLocation = FVector(Ladder->GetActorLocation().X, Ladder->GetActorLocation().Y, GetActorLocation().Z) + Ladder->GetActorForwardVector() * DistanceToLadder;
 		FVector LocationDelta = TargetLocation - GetActorLocation();
 		FHitResult HitResult;
 		SafeMoveUpdatedComponent(LocationDelta, Ladder->GetActorRotation().Add(0.f, 180.f, 0.f), false, HitResult);
@@ -50,7 +50,7 @@ void UBaseCharacterMovementComponent::AttachToLadder(ALadder* Ladder)
 
 void UBaseCharacterMovementComponent::DetachFromLadder()
 {
-	SetMovementMode(MOVE_Falling);
+	SetMovementMode(MOVE_Walking);
 	CurrentLadder = nullptr;
 }
 
@@ -104,7 +104,7 @@ void UBaseCharacterMovementComponent::PhysLadder(float DeltaTime, int32 Iteratio
 	CalcVelocity(DeltaTime, 1.f, false, 2048.f);
 	FVector LocationDelta = Velocity * DeltaTime;
 	FHitResult HitResult;
-	SafeMoveUpdatedComponent(LocationDelta, FQuat::Identity, false, HitResult);
+	SafeMoveUpdatedComponent(LocationDelta, CurrentLadder->GetActorRotation().Add(0.f, 180.f, 0.f), true, HitResult);
 }
 
 float UBaseCharacterMovementComponent::GetMaxSpeed() const

@@ -69,6 +69,10 @@ protected:
 	void PhysMantle(float DelatTime, int32 Iterations);
 	void PhysLadder(float DelatTime, int32 Iterations);
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+	// Distance to ladder when player attached to it
+	float DistanceToLadder = 50.f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Swimming")
 	float SwimmingtCapsuleHalfHeight = 50.f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Swimming")

@@ -24,4 +24,5 @@ void UBaseCharacterAnimInstance::NativeUpdateAnimation(float DeltaSeconds)
 	bIsFalling = OwnerCharacterMovementComponent->IsFalling();
 	bIsSwimming = OwnerCharacterMovementComponent->IsSwimming();
 	bIsWalking = OwnerCharacterMovementComponent->IsWalking();
+	bIsClimbing = OwnerCharacterMovementComponent->IsOnLadder();
 }
