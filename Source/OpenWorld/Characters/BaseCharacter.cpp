@@ -15,6 +15,7 @@
 #include <Curves/CurveVector.h>
 
 #include "../Actors/InteractiveActor.h"
+#include <OpenWorld/Actors/Ladder.h>
 
 // Sets default values
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
@@ -58,6 +59,18 @@ bool ABaseCharacter::CanJumpInternal_Implementation() const
 	return (!BaseCharacterMovementComponent->IsMantling()) && Super::CanJumpInternal_Implementation();
 }
 
+ALadder* ABaseCharacter::FindAviableLadder()
+{
+	for (AInteractiveActor* InteractiveActor : InteractiveActors)
+	{
+		if (InteractiveActor->IsA<ALadder>())
+		{
+			return StaticCast<ALadder*>(InteractiveActor);
+		}
+	}
+	return nullptr;
+}
+
 // Called every frame
 void ABaseCharacter::Tick(float DeltaTime)
 {
@@ -77,6 +90,11 @@ void ABaseCharacter::UnregisterInteractiveActor(AInteractiveActor* Actor)
 	if (IsValid(Actor))
 	{
 		InteractiveActors.Remove(Actor);
+
+		if (Actor->IsA<ALadder>() && BaseCharacterMovementComponent->IsOnLadder())
+		{
+			BaseCharacterMovementComponent->DetachFromLadder();
+		}
 	}
 }
 
@@ -116,6 +134,30 @@ void ABaseCharacter::Move(const FInputActionValue& Value)
 
 		AddMovementInput(YawRotationMatrix.GetUnitAxis(EAxis::X), MovementVector.Y);
 		AddMovementInput(YawRotationMatrix.GetUnitAxis(EAxis::Y), MovementVector.X);
+	}
+}
+
+void ABaseCharacter::ClimbUpLadder(const FInputActionValue& Value)
+{
+	if (Controller && BaseCharacterMovementComponent->IsOnLadder())
+	{
+		AddMovementInput(BaseCharacterMovementComponent->GetCurrentLadder()->GetActorUpVector(), Value.Get<float>());
+	}
+}
+
+void ABaseCharacter::InteractWithLadder()
+{
+	if (BaseCharacterMovementComponent->IsOnLadder())
+	{
+		BaseCharacterMovementComponent->DetachFromLadder();
+	}
+	else
+	{
+		ALadder* Ladder = FindAviableLadder();
+		if (Ladder)
+		{
+			BaseCharacterMovementComponent->AttachToLadder(Ladder);
+		}
 	}
 }
 

@@ -35,6 +35,8 @@ void AOpenWorldPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Triggered, this, &AOpenWorldPlayerController::Jump);
 		EnhancedInputComponent->BindAction(JumpAction, ETriggerEvent::Completed, this, &AOpenWorldPlayerController::StopJumping);
 		EnhancedInputComponent->BindAction(SwimAction, ETriggerEvent::Triggered, this, &AOpenWorldPlayerController::Swim);
+		EnhancedInputComponent->BindAction(InteractLadderAction, ETriggerEvent::Triggered, this, &AOpenWorldPlayerController::InteractWithLadder);
+		EnhancedInputComponent->BindAction(ClimbUpLadderAction, ETriggerEvent::Triggered, this, &AOpenWorldPlayerController::ClimbUpLadder);
 	}
 }
 
@@ -59,6 +61,22 @@ void AOpenWorldPlayerController::Move(const FInputActionValue& Value)
 	if (CachedCharacter.IsValid())
 	{
 		CachedCharacter->Move(Value);
+	}
+}
+
+void AOpenWorldPlayerController::ClimbUpLadder(const FInputActionValue& Value)
+{
+	if (CachedCharacter.IsValid())
+	{
+		CachedCharacter->ClimbUpLadder(Value);
+	}
+}
+
+void AOpenWorldPlayerController::InteractWithLadder()
+{
+	if (CachedCharacter.IsValid())
+	{
+		CachedCharacter->InteractWithLadder();
 	}
 }
 

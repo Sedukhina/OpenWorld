@@ -74,12 +74,14 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Character|Movement|Mantling")
 	TArray<FMantlingSettings> MantlingSettingsArray;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Character|Movement|Mantling")
+	bool bCanMantle = true;
+
 	class UBaseCharacterMovementComponent* BaseCharacterMovementComponent;
 
 	virtual bool CanJumpInternal_Implementation() const override;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	bool bCanMantle = true;
+	class ALadder* FindAviableLadder();
 
 	TArray<AInteractiveActor*> InteractiveActors;
 
@@ -99,6 +101,9 @@ public:
 	// Movement Functions
 	void Move(const FInputActionValue& Value);
 	void Swim(const FInputActionValue& Value);
+	void ClimbUpLadder(const FInputActionValue& Value);
+
+	void InteractWithLadder();
 
 	void Mantle();
 	bool CanMantle();

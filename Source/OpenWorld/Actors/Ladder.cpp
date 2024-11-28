@@ -6,6 +6,7 @@
 #include "Components/InstancedStaticMeshComponent.h"
 #include <Components/BoxComponent.h>
 #include <OpenWorld/CollisionChannelsAliases.h>
+#include <OpenWorld/Characters/BaseCharacter.h>
 
 ALadder::ALadder()
 {
@@ -82,3 +83,4 @@ UBoxComponent* ALadder::GetLadderInteractionBoxVolume() const
 {
 	return StaticCast<UBoxComponent*>(InteractiveVolume);
 }
+

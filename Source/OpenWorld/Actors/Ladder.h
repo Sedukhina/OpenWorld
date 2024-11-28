@@ -13,7 +13,7 @@ UCLASS(Blueprintable)
 class OPENWORLD_API ALadder : public AInteractiveActor
 {
 	GENERATED_BODY()
-	
+
 public:
 	ALadder();
 
@@ -39,4 +39,5 @@ protected:
 	class UInstancedStaticMeshComponent* StepsMeshComponent;
 
 	class UBoxComponent* GetLadderInteractionBoxVolume() const;
+
 };

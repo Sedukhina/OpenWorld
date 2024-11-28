@@ -46,6 +46,12 @@ protected:
 	class UInputAction* MantleAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* InteractLadderAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
+	class UInputAction* ClimbUpLadderAction;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	class UInputAction* SwimAction;
 
 	void Look(const FInputActionValue& Value);
@@ -53,6 +59,9 @@ protected:
 
 	void Move(const FInputActionValue& Value);
 	void Swim(const FInputActionValue& Value);
+	void ClimbUpLadder(const FInputActionValue& Value);
+
+	void InteractWithLadder();
 
 	void Jump();
 	void StopJumping();
