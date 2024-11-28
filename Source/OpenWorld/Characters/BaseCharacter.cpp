@@ -14,6 +14,8 @@
 #include <Components/CapsuleComponent.h>
 #include <Curves/CurveVector.h>
 
+#include "../Actors/InteractiveActor.h"
+
 // Sets default values
 ABaseCharacter::ABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UBaseCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
@@ -60,6 +62,22 @@ bool ABaseCharacter::CanJumpInternal_Implementation() const
 void ABaseCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+void ABaseCharacter::RegisterInteractiveActor(AInteractiveActor* Actor)
+{
+	if (IsValid(Actor))
+	{
+		InteractiveActors.Add(Actor);
+	}
+}
+
+void ABaseCharacter::UnregisterInteractiveActor(AInteractiveActor* Actor)
+{
+	if (IsValid(Actor))
+	{
+		InteractiveActors.Remove(Actor);
+	}
 }
 
 // Called to bind functionality to input

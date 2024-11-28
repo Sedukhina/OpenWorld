@@ -36,6 +36,8 @@ struct FMantlingSettings
 	float AnimationCorrectionZ = 150.f;
 };
 
+class AInteractiveActor;
+
 UCLASS(Blueprintable)
 class OPENWORLD_API ABaseCharacter : public ACharacter
 {
@@ -79,9 +81,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	bool bCanMantle = true;
 
+	TArray<AInteractiveActor*> InteractiveActors;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	void RegisterInteractiveActor(AInteractiveActor* Actor);
+	void UnregisterInteractiveActor(AInteractiveActor* Actor);
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
