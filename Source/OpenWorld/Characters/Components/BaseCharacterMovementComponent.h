@@ -65,6 +65,7 @@ public:
 protected:
 	TWeakObjectPtr<class ABaseCharacter> CachedCharacterOwner;
 
+	virtual void PhysicsRotation(float DeltaTime) override;
 	virtual void PhysCustom(float DelatTime, int32 Iterations) override;
 	void PhysMantle(float DelatTime, int32 Iterations);
 	void PhysLadder(float DelatTime, int32 Iterations);

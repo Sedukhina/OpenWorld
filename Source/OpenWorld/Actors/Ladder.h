@@ -19,6 +19,8 @@ public:
 
 	virtual void OnConstruction(const FTransform& Transform) override;
 
+	float GetLadderHeight();
+
 protected:
 	// Ladder parametrs
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)

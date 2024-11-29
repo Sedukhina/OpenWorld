@@ -79,6 +79,11 @@ void ALadder::OnConstruction(const FTransform& Transform)
 	InteractiveBox->SetGenerateOverlapEvents(true);
 }
 
+float ALadder::GetLadderHeight()
+{
+	return LadderHeight;
+}
+
 UBoxComponent* ALadder::GetLadderInteractionBoxVolume() const
 {
 	return StaticCast<UBoxComponent*>(InteractiveVolume);
